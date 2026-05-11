@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #74ebd5, #9face6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.choices {
+  margin-bottom: 1.5rem;
+}
+
+.choice {
+  font-size: 3rem;
+  margin: 0 1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  background: none;
+  border: none;
+}
+
+.choice:hover {
+  transform: scale(1.2);
+}
+
+#result {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+#reset {
+  padding: 5px 5px;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #6c63ff;
+  color: white;
+  cursor: pointer;
+}
+
+#reset:hover {
+  background-color: #574b90;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rock ✊ Paper ✋ Scissors ✌️</h1>
+    <div class="scoreboard">
+      <div>👤 You: <span id="user-score">0</span></div>
+      <div>💻 Computer: <span id="computer-score">0</span></div>
+    </div>
+    <div class="choices">
+      <button class="choice" id="rock">✊</button>
+      <button class="choice" id="paper" data-choice="paper">✋</button>
+      <button class="choice" id="scissors" data-choice="scissors">✌️</button>
+    </div>
+    <div id="result">Make your move!</div>
+    <button id="reset">🔄 Reset Game</button>
+  </div>
+<script>
+    // Get elements
+const userScoreSpan = document.getElementById('user-score');
+const computerScoreSpan = document.getElementById('computer-score');
+const resultDiv = document.getElementById('result');
+const rockBtn = document.getElementById('rock');
+const paperBtn = document.getElementById('paper');
+const scissorsBtn = document.getElementById('scissors');
+const resetBtn = document.getElementById('reset');
+
+// Scores
+let userScore = 0;
+let computerScore = 0;
+
+// Button click handlers
+rockBtn.onclick =()=> playGame('rock');
+paperBtn.onclick = () => playGame('paper');
+scissorsBtn.onclick = () => playGame('scissors');
+resetBtn.onclick = resetGame;
+
+// Game function
+function playGame(userChoice) {
+  const computerChoice = getComputerChoice();
+  const winner = checkWinner(userChoice, computerChoice);
+
+
+  if (winner === 'user') {
+    userScore++; //userScore=userScore+1
+    resultDiv.innerHTML = `You Win! ${userChoice} beats ${computerChoice}`;
+  } else if (winner === 'computer') {
+    computerScore++;
+    resultDiv.innerHTML = `Computer Wins! ${computerChoice} beats ${userChoice}`;
+  } else {
+    resultDiv.innerHTML = `It's a Draw! You both chose ${userChoice}`;
+  }
+
+  updateScores();
+}
+
+function getComputerChoice() {
+  const choices = ['rock', 'paper', 'scissors'];
+  return choices[Math.floor(Math.random() * choices.length)];
+}
+
+function checkWinner(user, computer) {
+  if (user === computer) return 'draw';
+  if (
+    (user === 'rock' && computer === 'scissors') ||
+    (user === 'paper' && computer === 'rock') ||
+    (user === 'scissors' && computer === 'paper')
+  ) {
+    return 'user';
+  }
+  return 'computer';
+}
+
+function updateScores() {
+  userScoreSpan.textContent = userScore;
+  computerScoreSpan.textContent = computerScore;
+}
+
+function resetGame() {
+  userScore = 0;
+  computerScore = 0;
+  updateScores();
+  resultDiv.textContent = 'Make your move!';
+}
+</script>
+</body>
+</html>
